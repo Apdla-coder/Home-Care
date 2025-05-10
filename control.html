@@ -1,0 +1,182 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مكتب التمريض - لوحة التحكم</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: "Tahoma", sans-serif;
+      }
+      .dashboard-card {
+        min-height: 140px;
+        border-radius: 15px;
+        transition: 0.3s;
+        cursor: pointer;
+      }
+      .dashboard-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        color: blueviolet;
+      }
+      .emoji {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"
+          ><img src="./Home care.png" width="70px" style="border-radius: 50%" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- رقم المكتب -->
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="https://wa.me/201068405432"
+                target="_blank"
+                >رقم المكتب: 01068405432</a
+              >
+            </li>
+            <!-- العنوان -->
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="https://maps.app.goo.gl/mMD9K8xmbt57ZGNX9"
+                target="_blank"
+                >العنوان: بنها المنشية بجانب مسجد الشهيد عبدالمنعم رياض اعلى
+                صيدلية إيهاب شكر</a
+              >
+            </li>
+            <!-- رابط تفاصيل السيستم -->
+            <li class="nav-item">
+              <a class="nav-link" href="./show.html">تفاصيل النظام</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- لوحة التحكم -->
+    <div class="container">
+      <h2 class="mb-4 text-center">لوحة التحكم الرئيسية</h2>
+      <div class="row g-4">
+        <!-- عنصر -->
+        <div class="col-md-4 col-sm-6">
+          <a href="nurses.html" class="text-decoration-none text-dark">
+            <div class="bg-white p-4 dashboard-card text-center">
+              <div class="emoji">👩‍⚕️</div>
+              <h5>إدارة الممرضين</h5>
+            </div>
+          </a>
+        </div>
+        <!-- عنصر -->
+        <div class="col-md-4 col-sm-6">
+          <a href="devices.html" class="text-decoration-none text-dark">
+            <div class="bg-white p-4 dashboard-card text-center">
+              <div class="emoji">🩺</div>
+              <h5>الأجهزة</h5>
+            </div>
+          </a>
+        </div>
+        <!-- عنصر -->
+        <div class="col-md-4 col-sm-6">
+          <a href="medicines.html" class="text-decoration-none text-dark">
+            <div class="bg-white p-4 dashboard-card text-center">
+              <div class="emoji">💊</div>
+              <h5>الأدوية</h5>
+            </div>
+          </a>
+        </div>
+        <!-- عنصر -->
+        <div class="col-md-4 col-sm-6">
+          <a href="./com.html" class="text-decoration-none text-dark">
+            <div class="bg-white p-4 dashboard-card text-center">
+              <div class="emoji">💰</div>
+              <h5>الإيرادات</h5>
+            </div>
+          </a>
+        </div>
+        <!-- عنصر -->
+        <div class="col-md-4 col-sm-6">
+          <a href="./Expenses.html" class="text-decoration-none text-dark">
+            <div class="bg-white p-4 dashboard-card text-center">
+              <div class="emoji">📉</div>
+              <h5>المصروفات</h5>
+            </div>
+          </a>
+        </div>
+        <!-- عنصر -->
+        <div class="col-md-4 col-sm-6">
+          <a href="reports.html" class="text-decoration-none text-dark">
+            <div class="bg-white p-4 dashboard-card text-center">
+              <div class="emoji">📊</div>
+              <h5>التقارير</h5>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-4 mt-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- لوجو -->
+          <div class="col-md-4 text-center mb-3 mb-md-0">
+            <img
+              src="./Home care.png"
+              alt="شعار المكتب"
+              width="80"
+              style="border-radius: 50%"
+            />
+          </div>
+
+          <!-- بيانات التواصل -->
+          <div class="col-md-8 text-center text-md-end">
+            <p class="mb-1">
+              <a
+                href="https://wa.me/201068405432"
+                class="text-white text-decoration-none"
+                target="_blank"
+              >
+                📞 رقم المكتب: 01068405432
+              </a>
+            </p>
+            <p class="mb-0">
+              <a
+                href="https://maps.app.goo.gl/mMD9K8xmbt57ZGNX9"
+                class="text-white text-decoration-none"
+                target="_blank"
+              >
+                📍 العنوان: بنها، المنشية، بجانب مسجد الشهيد عبدالمنعم رياض،
+                أعلى صيدلية إيهاب شكر
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- سكربت Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>إدارة الممرضين</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .form-section {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./index.html">مكتب التمريض</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="mb-3">
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="ابحث باسم الممرض أو رقم الهاتف أو نوع الخدمة"
+        />
+      </div>
+
+      <h2 class="mb-4">إدارة الممرضين</h2>
+
+      <!-- ✅ نموذج إضافة / تعديل ممرض -->
+      <div class="form-section">
+        <h5 class="mb-3" id="formTitle">إضافة ممرض جديد</h5>
+        <form id="nurseForm">
+          <div class="row g-3">
+            <!-- بيانات الممرض -->
+            <div class="col-md-4">
+              <label class="form-label">الاسم</label>
+              <input type="text" class="form-control" id="name" required />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">رقم الهاتف</label>
+              <input type="tel" class="form-control" id="phone" required />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">النسبة (%)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="commission"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">الرقم القومي</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nationalId"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العنوان</label>
+              <input type="text" class="form-control" id="address" required />
+            </div>
+
+            <!-- بيانات المريض -->
+            <div class="col-md-6">
+              <label class="form-label">اسم المريض</label>
+              <input
+                type="text"
+                class="form-control"
+                id="patientName"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العمر</label>
+              <input
+                type="number"
+                class="form-control"
+                id="patientAge"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">الجنس</label>
+              <select class="form-select" id="patientGender" required>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">التاريخ الطبي</label>
+              <textarea
+                class="form-control"
+                id="patientMedicalHistory"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+
+            <!-- بيانات الخدمة -->
+            <div class="col-md-12">
+              <label class="form-label">نوع الخدمة</label>
+              <select class="form-select" id="serviceType" required>
+                <option value="">اختر نوع الخدمة</option>
+                <option value="Homecare">Homecare</option>
+                <option value="الاجراءات العملية">الاجراءات العملية</option>
+                <option value="العينات واجهزة القياس">
+                  العينات واجهزة القياس
+                </option>
+                <option value="الجلسات والاقامات">الجلسات والاقامات</option>
+                <option value="تركيب كانيولا">تركيب كانيولا</option>
+                <option value="تركيب كانيولا+محلول">تركيب كانيولا+محلول</option>
+                <option value="تركيب قسطرة">تركيب قسطرة</option>
+                <option value="تركيب رايل تغذية">تركيب رايل تغذية</option>
+                <option value="غيار جروح عميقة">غيار جروح عميقة</option>
+                <option value="فك غرز خياطة">فك غرز خياطة</option>
+                <option value="حقنة عضل">حقنة عضل</option>
+                <option value="حقنة وريد">حقنة وريد</option>
+                <option value="عمل حقنة شرجية">عمل حقنة شرجية</option>
+                <option value="سحب عينات معامل">سحب عينات معامل</option>
+                <option value="قياس السكر">قياس السكر</option>
+                <option value="قياس الضغط">قياس الضغط</option>
+                <option value="جلسة الاكسجين">جلسة الاكسجين</option>
+                <option value="جلسة النيبولايزر">جلسة النيبولايزر</option>
+                <option value="اقامة مرافق">اقامة مرافق</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">تاريخ الخدمة</label>
+              <input
+                type="date"
+                class="form-control"
+                id="serviceDate"
+                required
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">السعر</label>
+              <input
+                type="text"
+                class="form-control"
+                id="servicePrice"
+                readonly
+              />
+            </div>
+            <div class="col-md-12 text-end">
+              <button type="submit" class="btn btn-success">حفظ</button>
+              <button
+                type="button"
+                id="cancelEdit"
+                class="btn btn-secondary d-none"
+              >
+                إلغاء
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- ✅ جدول عرض الممرضين -->
+      <div class="table-responsive">
+        <table class="table table-bordered bg-white">
+          <thead class="table-light">
+            <tr>
+              <th>تاريخ الخدمة</th>
+              <th>الاسم</th>
+              <th>اسم المريض</th>
+              <th>العمر</th>
+              <th>الجنس</th>
+              <th>نوع الخدمة</th>
+              <th>السعر</th>
+              <th>العمولة</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="nurseTableBody"></tbody>
+        </table>
+        <div id="noDataMessage" class="text-center text-muted py-3"></div>
+      </div>
+
+      <!-- ✅ تقرير عدد المرضى -->
+      <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+          <h5>إجمالي عدد المرضى</h5>
+        </div>
+        <div class="card-body text-center">
+          <h4 id="patientCount">0</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Modal لعرض الملف الشخصي -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">الملف الشخصي للممرض</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="إغلاق"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>الاسم:</strong> <span id="profileName"></span></p>
+            <p><strong>رقم الهاتف:</strong> <span id="profilePhone"></span></p>
+            <p><strong>الرقم القومي:</strong> <span id="profileId"></span></p>
+            <p><strong>العنوان:</strong> <span id="profileAddress"></span></p>
+            <p>
+              <strong>اسم المريض:</strong> <span id="profilePatientName"></span>
+            </p>
+            <p><strong>العمر:</strong> <span id="profilePatientAge"></span></p>
+            <p>
+              <strong>الجنس:</strong> <span id="profilePatientGender"></span>
+            </p>
+            <p>
+              <strong>التاريخ الطبي:</strong>
+              <span id="profilePatientMedicalHistory"></span>
+            </p>
+            <p>
+              <strong>نوع الخدمة:</strong> <span id="profileService"></span>
+            </p>
+            <p><strong>تاريخ الخدمة:</strong> <span id="profileDate"></span></p>
+
+            <p>
+              <strong>النسبة:</strong> <span id="profileCommission"></span>%
+            </p>
+            <p><strong>السعر:</strong> <span id="profilePrice"></span> جنيه</p>
+            <p>
+              <strong>العمولة:</strong>
+              <span id="profileCommissionValue"></span> جنيه
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button id="downloadExcel" class="btn btn-primary">تحميل Excel</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const servicePrices = {
+        Homecare: 70,
+        "الاجراءات العملية": 80,
+        "العينات واجهزة القياس": 200,
+        "الجلسات والاقامات": 250,
+        "تركيب كانيولا": 80,
+        "تركيب كانيولا+محلول": 80,
+        "تركيب قسطرة": 30,
+        "تركيب رايل تغذية": 50,
+        "غيار جروح عميقة": 200,
+        "فك غرز خياطة": 50,
+        "حقنة عضل": 20,
+        "حقنة وريد": 20,
+        "عمل حقنة شرجية": 100,
+        "سحب عينات معامل": 100,
+        "قياس السكر": 30,
+        "قياس الضغط": 30,
+        "جلسة الاكسجين": 30,
+        "جلسة النيبولايزر": 30,
+        "اقامة مرافق": 30,
+      };
+
+      let nurses = JSON.parse(localStorage.getItem("nurses") || "[]");
+      let editIndex = null;
+
+      const form = document.getElementById("nurseForm");
+      const cancelEditBtn = document.getElementById("cancelEdit");
+      document
+        .getElementById("downloadExcel")
+        .addEventListener("click", function () {
+          const ws_data = [
+            [
+              "Service Date",
+              "Name",
+              "Phone",
+              "Commission",
+              "National ID",
+              "Address",
+              "Patient Name",
+              "Patient Age",
+              "Patient Gender",
+              "Service",
+              "Service Price",
+              "Commission Value",
+            ],
+          ];
+
+          nurses.forEach((nurse) => {
+            const servicePrice = servicePrices[nurse.service] || 0;
+            const commissionAmount = (nurse.commission / 100) * servicePrice;
+            ws_data.push([
+              nurse.serviceDate,
+              nurse.name,
+              nurse.phone,
+              nurse.commission,
+              nurse.nationalId,
+              nurse.address,
+              nurse.patientName,
+              nurse.patientAge,
+              nurse.patientGender,
+              nurse.service,
+              servicePrice,
+              commissionAmount.toFixed(2),
+            ]);
+          });
+
+          const ws = XLSX.utils.aoa_to_sheet(ws_data);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Nurses Data");
+
+          // Download the Excel file
+          XLSX.writeFile(wb, "nurses_data.xlsx");
+        });
+
+      // تحديث السعر تلقائي
+      document
+        .getElementById("serviceType")
+        .addEventListener("change", function () {
+          const price = servicePrices[this.value] || 0;
+          document.getElementById("servicePrice").value = price;
+        });
+
+      // حفظ البيانات
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const nurse = {
+          name: document.getElementById("name").value,
+          phone: document.getElementById("phone").value,
+          commission: parseFloat(document.getElementById("commission").value),
+          nationalId: document.getElementById("nationalId").value,
+          address: document.getElementById("address").value,
+          patientName: document.getElementById("patientName").value,
+          patientAge: parseInt(document.getElementById("patientAge").value),
+          patientGender: document.getElementById("patientGender").value,
+          patientMedicalHistory: document.getElementById(
+            "patientMedicalHistory"
+          ).value,
+          service: document.getElementById("serviceType").value,
+          serviceDate: document.getElementById("serviceDate").value,
+        };
+
+        if (editIndex !== null) {
+          nurses[editIndex] = nurse;
+          editIndex = null;
+          cancelEditBtn.classList.add("d-none");
+          document.getElementById("formTitle").innerText = "إضافة ممرض جديد";
+        } else {
+          nurses.push(nurse);
+        }
+
+        localStorage.setItem("nurses", JSON.stringify(nurses));
+        form.reset();
+        document.getElementById("servicePrice").value = "";
+        renderTable();
+      });
+
+      cancelEditBtn.addEventListener("click", () => {
+        form.reset();
+        editIndex = null;
+        cancelEditBtn.classList.add("d-none");
+        document.getElementById("formTitle").innerText = "إضافة ممرض جديد";
+      });
+
+      function renderTable() {
+        const table = document.getElementById("nurseTableBody");
+        const noDataMessage = document.getElementById("noDataMessage");
+        const patientCount = document.getElementById("patientCount");
+        const totalServicePrice = document.getElementById("totalServicePrice");
+        const totalCommissions = document.getElementById("totalCommissions");
+
+        table.innerHTML = "";
+
+        let totalPatients = 0;
+        let totalPrice = 0;
+        let totalCommission = 0;
+
+        if (nurses.length === 0) {
+          noDataMessage.innerText = "لا يوجد ممرضين مضافين حالياً.";
+          patientCount.innerText = "0";
+          if (totalServicePrice) totalServicePrice.innerText = "0 جنيه";
+          if (totalCommissions) totalCommissions.innerText = "0 جنيه";
+          return;
+        } else {
+          noDataMessage.innerText = "";
+        }
+
+        nurses.forEach((nurse, index) => {
+          const servicePrice = servicePrices[nurse.service] || 0;
+          const commissionAmount = (nurse.commission / 100) * servicePrice;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${nurse.serviceDate}</td>
+            <td>${nurse.name}</td>
+            <td>${nurse.patientName}</td>
+            <td>${nurse.patientAge}</td>
+            <td>${nurse.patientGender}</td>
+            <td>${nurse.service}</td>
+            <td>${servicePrice} جنيه</td>
+            <td>${commissionAmount.toFixed(2)} جنيه</td>
+            <td>
+              <button class="btn btn-sm btn-info text-white" onclick="viewProfile(${index})">ملف شخصي</button>
+              <button class="btn btn-sm btn-warning" onclick="startEdit(${index})">تعديل</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteNurse(${index})">حذف</button>
+            </td>
+          `;
+          table.appendChild(row);
+
+          totalPatients++;
+          totalPrice += servicePrice;
+          totalCommission += commissionAmount;
+        });
+
+        patientCount.innerText = totalPatients;
+        if (totalServicePrice)
+          totalServicePrice.innerText = `${totalPrice.toFixed(2)} جنيه`;
+        if (totalCommissions)
+          totalCommissions.innerText = `${totalCommission.toFixed(2)} جنيه`;
+      }
+
+      function viewProfile(index) {
+        const nurse = nurses[index];
+        document.getElementById("profileName").innerText = nurse.name;
+        document.getElementById("profilePhone").innerText = nurse.phone;
+        document.getElementById("profileId").innerText = nurse.nationalId;
+        document.getElementById("profileAddress").innerText = nurse.address;
+        document.getElementById("profilePatientName").innerText =
+          nurse.patientName;
+        document.getElementById("profilePatientAge").innerText =
+          nurse.patientAge;
+        document.getElementById("profilePatientGender").innerText =
+          nurse.patientGender;
+        document.getElementById("profilePatientMedicalHistory").innerText =
+          nurse.patientMedicalHistory;
+        document.getElementById("profileService").innerText = nurse.service;
+        document.getElementById("profileDate").innerText = nurse.serviceDate;
+        document.getElementById("profileCommission").innerText =
+          nurse.commission;
+        const price = servicePrices[nurse.service] || 0;
+        document.getElementById("profilePrice").innerText = price;
+        document.getElementById("profileCommissionValue").innerText = (
+          (nurse.commission / 100) *
+          price
+        ).toFixed(2);
+        new bootstrap.Modal(document.getElementById("profileModal")).show();
+      }
+
+      function startEdit(index) {
+        const nurse = nurses[index];
+        document.getElementById("name").value = nurse.name;
+        document.getElementById("phone").value = nurse.phone;
+        document.getElementById("commission").value = nurse.commission;
+        document.getElementById("nationalId").value = nurse.nationalId;
+        document.getElementById("address").value = nurse.address;
+        document.getElementById("patientName").value = nurse.patientName;
+        document.getElementById("patientAge").value = nurse.patientAge;
+        document.getElementById("patientGender").value = nurse.patientGender;
+        document.getElementById("patientMedicalHistory").value =
+          nurse.patientMedicalHistory;
+        document.getElementById("serviceType").value = nurse.service;
+        document.getElementById("serviceDate").value = nurse.serviceDate;
+        document.getElementById("servicePrice").value =
+          servicePrices[nurse.service] || 0;
+
+        editIndex = index;
+        cancelEditBtn.classList.remove("d-none");
+        document.getElementById("formTitle").innerText = "تعديل بيانات الممرض";
+      }
+
+      function deleteNurse(index) {
+        if (confirm("هل أنت متأكد من حذف هذا الممرض؟")) {
+          nurses.splice(index, 1);
+          localStorage.setItem("nurses", JSON.stringify(nurses));
+          renderTable();
+        }
+      }
+
+      // البحث
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          const keyword = this.value.toLowerCase();
+          const filtered = nurses.filter(
+            (n) =>
+              n.name.toLowerCase().includes(keyword) ||
+              n.phone.toLowerCase().includes(keyword) ||
+              n.service.toLowerCase().includes(keyword)
+          );
+          renderFilteredTable(filtered);
+        });
+
+      function renderFilteredTable(list) {
+        const table = document.getElementById("nurseTableBody");
+        table.innerHTML = "";
+
+        list.forEach((nurse, index) => {
+          const servicePrice = servicePrices[nurse.service] || 0;
+          const commissionAmount = (nurse.commission / 100) * servicePrice;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${nurse.serviceDate}</td>
+            <td>${nurse.name}</td>
+            <td>${nurse.patientName}</td>
+            <td>${nurse.patientAge}</td>
+            <td>${nurse.patientGender}</td>
+            <td>${nurse.service}</td>
+            <td>${servicePrice} جنيه</td>
+            <td>${commissionAmount.toFixed(2)} جنيه</td>
+            <td>
+              <button class="btn btn-sm btn-info text-white" onclick="viewProfile(${index})">ملف شخصي</button>
+              <button class="btn btn-sm btn-warning" onclick="startEdit(${index})">تعديل</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteNurse(${index})">حذف</button>
+            </td>
+          `;
+          table.appendChild(row);
+        });
+      }
+
+      // أول مرة
+      renderTable();
+    </script>
+  </body>
+</html>

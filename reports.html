@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>التقارير</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .report-section {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+      }
+      .report-header {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./index.html"
+          >إدارة المصروفات والإيرادات</a
+        >
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./revenue.html">الإيرادات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./expenses.html">المصروفات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="./reports.html">التقارير</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./nurses.html">إدارة الممرضين</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h2 class="mb-4">التقارير</h2>
+
+      <!-- تقرير الإيرادات -->
+      <div class="report-section">
+        <h5 class="report-header">إجمالي الإيرادات</h5>
+        <p id="totalRevenue" class="fs-4">0 جنيه</p>
+      </div>
+
+      <!-- تقرير المصروفات -->
+      <div class="report-section">
+        <h5 class="report-header">إجمالي المصروفات</h5>
+        <p id="totalExpenses" class="fs-4">0 جنيه</p>
+      </div>
+
+      <!-- تقرير صافي الأرباح -->
+      <div class="report-section">
+        <h5 class="report-header">صافي الأرباح</h5>
+        <p id="netProfit" class="fs-4">0 جنيه</p>
+      </div>
+
+      <!-- تقرير الممرضين -->
+      <div class="report-section">
+        <h5 class="report-header">عدد الممرضين</h5>
+        <p id="totalNurses" class="fs-4">0 ممرض</p>
+      </div>
+
+      <!-- تقرير المرضى -->
+      <div class="report-section">
+        <h5 class="report-header">عدد المرضى</h5>
+        <p id="totalPatients" class="fs-4">0 مريض</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // جلب البيانات من localStorage
+      let revenues = JSON.parse(localStorage.getItem("revenues") || "[]");
+      let expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+      let nurses = JSON.parse(localStorage.getItem("nurses") || "[]");
+
+      // حساب إجمالي الإيرادات
+      function calculateTotalRevenue() {
+        return revenues.reduce((total, revenue) => total + revenue.amount, 0);
+      }
+
+      // حساب إجمالي المصروفات
+      function calculateTotalExpenses() {
+        return expenses.reduce((total, expense) => total + expense.amount, 0);
+      }
+
+      // حساب صافي الأرباح
+      function calculateNetProfit() {
+        return calculateTotalRevenue() - calculateTotalExpenses();
+      }
+
+      // حساب عدد الممرضين الفريدين (حسب الاسم مثلاً)
+      function calculateTotalNurses() {
+        const uniqueNurses = new Set(nurses.map((nurse) => nurse.name));
+        return uniqueNurses.size;
+      }
+
+      // حساب عدد المرضى (بناءً على كل عنصر في قائمة nurses يمثل مريض)
+      function calculateTotalPatients() {
+        return nurses.length;
+      }
+
+      // عرض التقارير
+      function renderReports() {
+        document.getElementById(
+          "totalRevenue"
+        ).innerText = `${calculateTotalRevenue()} جنيه`;
+        document.getElementById(
+          "totalExpenses"
+        ).innerText = `${calculateTotalExpenses()} جنيه`;
+        document.getElementById(
+          "netProfit"
+        ).innerText = `${calculateNetProfit()} جنيه`;
+        document.getElementById(
+          "totalNurses"
+        ).innerText = `${calculateTotalNurses()} ممرض`;
+        document.getElementById(
+          "totalPatients"
+        ).innerText = `${calculateTotalPatients()} مريض`;
+      }
+
+      // عرض التقارير عند تحميل الصفحة
+      renderReports();
+    </script>
+  </body>
+</html>

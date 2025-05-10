@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الملف الشخصي للممرض</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./index.html">مكتب التمريض</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h2>الملف الشخصي للممرض</h2>
+      <div id="profileDetails" class="profile-section">
+        <p>جارِ تحميل البيانات...</p>
+      </div>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const nurseIndex = parseInt(urlParams.get("id"));
+      const nurses = JSON.parse(localStorage.getItem("nurses") || "[]");
+
+      if (isNaN(nurseIndex) || nurseIndex < 0 || nurseIndex >= nurses.length) {
+        document.getElementById("profileDetails").innerHTML =
+          "الممرض غير موجود.";
+      } else {
+        const nurse = nurses[nurseIndex];
+        const profileSection = document.getElementById("profileDetails");
+        profileSection.innerHTML = `
+                <h3>${nurse.name}</h3>
+                <p><strong>رقم البطاقة الشخصية:</strong> ${nurse.idCard}</p>
+                <p><strong>رقم الهاتف:</strong> ${nurse.phone}</p>
+                <p><strong>العنوان:</strong> ${nurse.address}</p>
+                <p><strong>البريد الإلكتروني:</strong> ${nurse.email}</p>
+                <p><strong>نوع الخدمة:</strong> ${nurse.service}</p>
+                <p><strong>النسبة:</strong> ${nurse.commission}%</p>
+            `;
+      }
+    </script>
+  </body>
+</html>
