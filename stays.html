@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>إدارة المرضى والإقامات</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+      body {
+        background-color: #f5f5f5;
+        font-family: "Tahoma", sans-serif;
+      }
+      .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: white;
+      }
+      .btn {
+        font-size: 15px;
+      }
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        .modal-content,
+        .modal-content * {
+          visibility: visible !important;
+        }
+        .modal {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 100%;
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="p-3">
+    <a
+      href="control.html"
+      class="navbar-brand d-inline-block mb-3"
+      style="
+        color: blue;
+        padding: 12px 20px;
+        background-color: white;
+        border-radius: 50px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+      "
+    >
+      ← لوحة التحكم
+    </a>
+
+    <div class="container">
+      <h2 class="text-center mb-4">إدارة المرضى والإقامات</h2>
+
+      <!-- نموذج تسجيل مريض جديد -->
+      <div class="card p-4 mb-4">
+        <h5 class="mb-3">📝 تسجيل مريض جديد</h5>
+        <form id="patientForm">
+          <div class="row g-3">
+            <div class="col-md-2">
+              <input
+                required
+                class="form-control"
+                id="id"
+                placeholder="رقم المريض"
+              />
+            </div>
+            <div class="col-md-2">
+              <input
+                required
+                class="form-control"
+                id="patientName"
+                placeholder="اسم المريض"
+              />
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" id="address" placeholder="العنوان" />
+            </div>
+            <div class="col-md-2">
+              <input
+                type="number"
+                class="form-control"
+                id="age"
+                placeholder="السن"
+              />
+            </div>
+            <div class="col-md-4">
+              <input
+                class="form-control"
+                id="condition"
+                placeholder="الحالة الطبية"
+              />
+            </div>
+          </div>
+          <button class="btn btn-primary mt-3" type="submit">
+            ➕ إضافة مريض
+          </button>
+        </form>
+      </div>
+
+      <!-- جدول المرضى -->
+      <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5>📋 قائمة المرضى</h5>
+          <button class="btn btn-outline-success" onclick="exportToExcel()">
+            ⬇️ تصدير Excel
+          </button>
+        </div>
+        <table class="table table-bordered table-striped" id="patientsTable">
+          <thead class="table-light">
+            <tr>
+              <th>الرقم</th>
+              <th>الاسم</th>
+              <th>العنوان</th>
+              <th>السن</th>
+              <th>الحالة</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal تفاصيل الإقامات -->
+    <div class="modal fade" id="staysModal" tabindex="-1">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              📅 سجل الإقامات للمريض <span id="modalPatientName"></span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- نموذج إضافة إقامة -->
+            <form id="stayForm" class="row g-3 mb-4">
+              <input type="hidden" id="stayPatientId" />
+              <input type="hidden" id="stayIndex" />
+              <div class="col-md-2">
+                <input
+                  required
+                  class="form-control"
+                  id="nurse"
+                  placeholder="اسم الممرض"
+                />
+              </div>
+              <div class="col-md-2">
+                <input required type="date" class="form-control" id="date" />
+              </div>
+              <div class="col-md-2">
+                <input required type="date" class="form-control" id="endDate" />
+              </div>
+              <div class="col-md-2">
+                <input
+                  required
+                  type="number"
+                  class="form-control"
+                  id="hours"
+                  placeholder="الساعات"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  required
+                  type="number"
+                  class="form-control"
+                  id="rate"
+                  placeholder="سعر الساعة"
+                />
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-success w-100" type="submit">
+                  💾 حفظ
+                </button>
+              </div>
+            </form>
+
+            <!-- جدول الإقامات -->
+            <div id="printArea">
+              <table class="table table-bordered table-hover" id="staysTable">
+                <thead class="table-light">
+                  <tr>
+                    <th>من</th>
+                    <th>إلى</th>
+                    <th>الممرض</th>
+                    <th>المدة (ساعات)</th>
+                    <th>سعر الساعة</th>
+                    <th>الإجمالي</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <button onclick="window.print()" class="btn btn-outline-dark">
+              🖨️ طباعة
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- سكريبتات -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const patients = JSON.parse(localStorage.getItem("patients")) || [];
+      const patientForm = document.getElementById("patientForm");
+      const stayForm = document.getElementById("stayForm");
+      const patientsTable = document.querySelector("#patientsTable tbody");
+      const staysTable = document.querySelector("#staysTable tbody");
+      const staysModal = new bootstrap.Modal(
+        document.getElementById("staysModal")
+      );
+
+      function renderPatients() {
+        patientsTable.innerHTML = "";
+        patients.forEach((p, i) => {
+          const row = `
+            <tr>
+              <td>${p.id}</td>
+              <td>${p.name}</td>
+              <td>${p.address}</td>
+              <td>${p.age}</td>
+              <td>${p.condition}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="openStays('${p.id}')">الإقامات</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deletePatient(${i})">🗑️</button>
+              </td>
+            </tr>`;
+          patientsTable.insertAdjacentHTML("beforeend", row);
+        });
+      }
+
+      function deletePatient(index) {
+        if (confirm("هل أنت متأكد من حذف هذا المريض؟")) {
+          patients.splice(index, 1);
+          localStorage.setItem("patients", JSON.stringify(patients));
+          renderPatients();
+        }
+      }
+
+      patientForm.onsubmit = (e) => {
+        e.preventDefault();
+        const newPatient = {
+          id: id.value,
+          name: patientName.value,
+          address: address.value,
+          age: age.value,
+          condition: condition.value,
+          stays: [],
+        };
+        patients.push(newPatient);
+        localStorage.setItem("patients", JSON.stringify(patients));
+        renderPatients();
+        patientForm.reset();
+      };
+
+      function openStays(patientId) {
+        const patient = patients.find((p) => p.id === patientId);
+        if (!patient) return;
+
+        document.getElementById("modalPatientName").textContent = patient.name;
+        document.getElementById("stayPatientId").value = patient.id;
+        staysTable.innerHTML = "";
+
+        if (!patient.stays || patient.stays.length === 0) {
+          staysTable.innerHTML = `<tr><td colspan="7" class="text-center">لا توجد إقامات مسجلة</td></tr>`;
+        } else {
+          patient.stays.forEach((stay, index) => {
+            const total = stay.hours * stay.rate;
+            const row = `
+              <tr>
+                <td>${stay.date}</td>
+                <td>${stay.endDate}</td>
+                <td>${stay.nurse}</td>
+                <td>${stay.hours} ساعة</td>
+                <td>${stay.rate} جنيه</td>
+                <td><strong class="text-success">${total} جنيه</strong></td>
+                <td>
+                  <button class="btn btn-sm btn-warning" onclick="editStay('${patient.id}', ${index})">✏️</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteStay('${patient.id}', ${index})">🗑️</button>
+                </td>
+              </tr>`;
+            staysTable.insertAdjacentHTML("beforeend", row);
+          });
+        }
+
+        stayForm.reset();
+        document.getElementById("stayIndex").value = "";
+        staysModal.show();
+      }
+
+      stayForm.onsubmit = (e) => {
+        e.preventDefault();
+        const id = stayPatientId.value;
+        const patient = patients.find((p) => p.id === id);
+        const index = stayIndex.value;
+        const newStay = {
+          nurse: nurse.value,
+          date: date.value,
+          endDate: endDate.value,
+          hours: Number(hours.value),
+          rate: Number(rate.value),
+        };
+
+        if (!patient.stays) patient.stays = [];
+        if (index === "") {
+          patient.stays.push(newStay);
+        } else {
+          patient.stays[Number(index)] = newStay;
+        }
+
+        localStorage.setItem("patients", JSON.stringify(patients));
+        openStays(id);
+      };
+
+      function editStay(patientId, index) {
+        const patient = patients.find((p) => p.id === patientId);
+        const stay = patient.stays[index];
+        stayIndex.value = index;
+        stayPatientId.value = patientId;
+        nurse.value = stay.nurse;
+        date.value = stay.date;
+        endDate.value = stay.endDate;
+        hours.value = stay.hours;
+        rate.value = stay.rate;
+      }
+
+      function deleteStay(patientId, index) {
+        const patient = patients.find((p) => p.id === patientId);
+        if (confirm("هل تريد حذف هذه الإقامة؟")) {
+          patient.stays.splice(index, 1);
+          localStorage.setItem("patients", JSON.stringify(patients));
+          openStays(patientId);
+        }
+      }
+
+      function exportToExcel() {
+        const data = [];
+        patients.forEach((p) => {
+          if (!p.stays || p.stays.length === 0) {
+            data.push({
+              "رقم المريض": p.id,
+              "اسم المريض": p.name,
+              العنوان: p.address,
+              السن: p.age,
+              الحالة: p.condition,
+              "اسم الممرض": "-",
+              "تاريخ الإقامة": "-",
+              "تاريخ الانتهاء": "-",
+              المدة: "-",
+              "سعر الساعة": "-",
+              الإجمالي: "-",
+            });
+          } else {
+            p.stays.forEach((s) => {
+              data.push({
+                "رقم المريض": p.id,
+                "اسم المريض": p.name,
+                العنوان: p.address,
+                السن: p.age,
+                الحالة: p.condition,
+                "اسم الممرض": s.nurse,
+                "تاريخ الإقامة": s.date,
+                "تاريخ الانتهاء": s.endDate,
+                المدة: s.hours,
+                "سعر الساعة": s.rate,
+                الإجمالي: s.hours * s.rate,
+              });
+            });
+          }
+        });
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "الإقامات");
+        XLSX.writeFile(wb, "الإقامات_والمرضى.xlsx");
+      }
+
+      renderPatients();
+    </script>
+  </body>
+</html>
